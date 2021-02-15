@@ -18,9 +18,14 @@ public class Person {
      @JoinColumn(name = "passport_id")
      private Passport passport;
 
+     //однонаправленная
      @OneToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
      @JoinColumn(name = "person_id")
      private List<Phone> phones;
+
+     //двунаправленная
+     @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
+     private List<Address> addresses;
 
     public Person() {
     }
@@ -75,6 +80,11 @@ public class Person {
     }
 
     public void setAddress(String address) {
+        if(addresses !=null){
+            addresses.forEach(a->{
+                a.setPerson(this);
+            });
+        }
         this.address = address;
     }
 
